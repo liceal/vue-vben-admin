@@ -33,14 +33,20 @@
     setup() {
       const { createMessage } = useMessage();
 
+      const formData = reactive({
+        title: '阿松大',
+      });
+
       const [register, { validate, setProps }] = useForm({
         schemas,
+        model: formData,
         submitButtonOptions: {
           text: '提交',
         },
         submitFunc: async () => {
           await validate();
-          console.log(register);
+
+          console.log(formData);
 
           setProps({
             submitButtonOptions: {

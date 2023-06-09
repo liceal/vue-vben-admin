@@ -23,6 +23,15 @@ const My: AppRouteModule = {
       },
     },
     {
+      path: 'formv2',
+      name: 'Formv2',
+      component: () => import('/@/views/my/form.v2/index.vue'),
+      meta: {
+        title: t('routes.my.formv2'),
+        icon: 'ion:file-tray',
+      },
+    },
+    {
       path: 'table',
       name: 'Table',
       component: () => import('/@/views/my/table/index.vue'),
