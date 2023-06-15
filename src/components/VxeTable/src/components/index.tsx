@@ -22,6 +22,9 @@ import AEmpty from './AEmpty';
 import AInputSearch from './AInputSearch';
 import AYearPicker from './AYearPicker';
 
+// 简易版渲染器注册
+import MyComponents from './MyComponents';
+
 /**
  * 检查触发源是否属于目标节点
  */
@@ -99,6 +102,7 @@ export const VXETablePluginAntd = {
       AEmpty,
       AInputSearch,
       AYearPicker,
+      ...MyComponents,
     });
 
     interceptor.add('event.clearFilter', handleClearEvent);

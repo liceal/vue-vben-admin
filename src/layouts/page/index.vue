@@ -14,9 +14,12 @@
         mode="out-in"
         appear
       >
-        <keep-alive v-if="openCache" :include="getCaches">
-          <component :is="Component" :key="route.fullPath" />
-        </keep-alive>
+        <Wrapper v-if="openCache">
+          <keep-alive :include="getCaches">
+            <component :is="Component" :key="route.fullPath" />
+          </keep-alive>
+        </Wrapper>
+
         <component v-else :is="Component" :key="route.fullPath" />
       </transition>
     </template>
@@ -25,6 +28,9 @@
 </template>
 
 <script lang="ts">
+  import { PageWrapper } from '/@/components/Page';
+  import Wrapper from './wrapper.vue';
+
   import { computed, defineComponent, unref } from 'vue';
 
   import FrameLayout from '/@/layouts/iframe/index.vue';
@@ -39,7 +45,7 @@
 
   export default defineComponent({
     name: 'PageLayout',
-    components: { FrameLayout },
+    components: { FrameLayout, PageWrapper, Wrapper },
     setup() {
       const { getShowMultipleTab } = useMultipleTabSetting();
       const tabStore = useMultipleTabStore();

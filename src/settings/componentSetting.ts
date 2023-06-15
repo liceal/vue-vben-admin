@@ -1,6 +1,7 @@
 // Used to configure the general configuration of some components without modifying the components
 
 import type { SorterResult } from '../components/Table';
+import { VXETableSetupOptions } from 'vxe-table';
 
 export default {
   // basic-table setting
@@ -42,7 +43,7 @@ export default {
       return data;
     },
   },
-  vxeTable: {
+  vxeTable: <VXETableSetupOptions>{
     table: {
       border: true,
       stripe: true,
