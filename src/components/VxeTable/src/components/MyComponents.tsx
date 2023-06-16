@@ -33,7 +33,7 @@ const renderComponent: Record<string, RendererOptions> = {
   },
   AInputGroup: {
     renderItemContent: (renderOpts, params) => {
-      console.log(renderOpts, params);
+      // console.log(renderOpts, params);
 
       const { props = {}, events = {}, children = [] } = renderOpts;
       const { data } = params;

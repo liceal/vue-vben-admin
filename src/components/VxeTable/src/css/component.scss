@@ -1,8 +1,10 @@
+/* stylelint-disable-next-line scss/percent-placeholder-pattern */
 %ResetBorder {
   border: 0;
   box-shadow: none;
 }
 
+/* stylelint-disable-next-line scss/percent-placeholder-pattern */
 %CompWidth {
   & > .ant-input,
   & > .ant-input-number,
@@ -13,11 +15,51 @@
     width: 100%;
   }
 }
+
 .vxe-form {
   .vxe-form--item-content {
     @extend %CompWidth;
   }
+
+  // vxe form 报错 兼容 antv
+  .is--error {
+    // 输入框
+    .ant-input,
+    .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled) {
+      border-color: $vxe-table-validate-error-color;
+    }
+
+    // :not(.ant-input-affix-wrapper) > .ant-input,
+    .ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-disabled),
+    .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+      border-color: $vxe-table-validate-error-color;
+      box-shadow: 0 0 0 2px rgba($vxe-table-validate-error-color, 0.2);
+    }
+
+    // 选择框
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-color: $vxe-table-validate-error-color;
+    }
+
+    .ant-select-focused:not(.ant-select-disabled) .ant-select-selector,
+    .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+      border-color: $vxe-table-validate-error-color !important;
+      box-shadow: 0 0 0 2px rgba($vxe-table-validate-error-color, 0.2) !important;
+    }
+
+    // 数字输入框
+    .ant-input-number {
+      border-color: $vxe-table-validate-error-color;
+    }
+
+    .ant-input-number-focused,
+    .ant-input-number:hover {
+      border-color: $vxe-table-validate-error-color;
+      box-shadow: 0 0 0 2px rgba($vxe-table-validate-error-color, 0.2);
+    }
+  }
 }
+
 .vxe-table--filter-antd-wrapper {
   & > .ant-input,
   & > .ant-input-number,
@@ -26,16 +68,20 @@
     width: 180px;
   }
 }
+
 .vxe-cell,
 .vxe-tree-cell {
   @extend %CompWidth;
+
   & > .ant-rate {
     vertical-align: bottom;
+
     .anticon-star {
       display: block;
     }
   }
 }
+
 .col--valid-error {
   & > .vxe-cell,
   & > .vxe-tree-cell {
@@ -50,56 +96,76 @@
     }
   }
 }
+
 .vxe-table.cell--highlight {
   .vxe-cell,
   .vxe-tree-cell {
     & > .ant-input,
     & > .ant-input-number {
-      padding: 0;
       @extend %ResetBorder;
+
+      padding: 0;
     }
+
     & > .ant-select {
       .ant-input {
-        padding: 0;
         @extend %ResetBorder;
+
+        padding: 0;
       }
     }
+
     & > .ant-input-number {
       .ant-input-number-input {
         padding: 0;
       }
+
       .ant-input-number-handler-wrap,
       .ant-input-number-handler-down {
         @extend %ResetBorder;
       }
     }
+
+    /* stylelint-disable-next-line no-duplicate-selectors */
     & > .ant-select {
       .ant-select-selection {
         @extend %ResetBorder;
+
         .ant-select-selection__rendered {
           margin: 0;
         }
       }
     }
+
     & > .ant-cascader-picker {
       .ant-input {
         @extend %ResetBorder;
       }
+
       .ant-cascader-picker-label {
         padding: 0;
       }
     }
+
     & > .ant-calendar-picker {
       .ant-calendar-picker-input {
-        padding: 0;
         @extend %ResetBorder;
+
+        padding: 0;
       }
     }
+
     & > .ant-time-picker {
       .ant-time-picker-input {
-        padding: 0;
         @extend %ResetBorder;
+
+        padding: 0;
       }
     }
   }
+}
+
+// ant组件
+.ant-btn + .ant-btn {
+  margin-left: 0.8rem;
 }

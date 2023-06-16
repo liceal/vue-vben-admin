@@ -34,7 +34,7 @@ const My: AppRouteModule = {
     {
       path: 'table',
       name: 'MyTable',
-      component: () => import('/@/views/my/table/index.vue'),
+      component: () => import('/@/views/my/table'),
       meta: {
         title: t('routes.my.table'),
         icon: 'simple-icons:about-dot-me',

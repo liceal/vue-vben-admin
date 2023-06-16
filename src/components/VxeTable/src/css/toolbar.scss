@@ -13,6 +13,7 @@
   border-radius: 0 !important;
 }
 
+/* stylelint-disable-next-line no-duplicate-selectors */
 .vxe-toolbar .vxe-tools--wrapper,
 .vxe-toolbar .vxe-tools--operate button:first-child {
   margin-left: 10px;
@@ -27,4 +28,27 @@
 .vxe-toolbar .vxe-tools--wrapper,
 .vxe-toolbar .vxe-tools--operate .vxe-custom--wrapper .vxe-button {
   margin-left: 1px;
+}
+
+.vxe-tools--operate {
+  display: flex;
+  gap: 0.3em;
+}
+
+// 按钮组边距
+.vxe-tools--wrapper,
+.vxe-buttons--wrapper {
+  gap: 0.8em;
+}
+
+.vxe-tools--wrapper,
+.vxe-buttons--wrapper,
+.vxe-tools--operate {
+  .vxe-button + .vxe-button--dropdown,
+  .vxe-button + .vxe-button,
+  .vxe-button + .vxe-button--item,
+  .vxe-button--item + .vxe-button,
+  .vxe-button--item + .vxe-button--item {
+    margin-left: inherit !important;
+  }
 }

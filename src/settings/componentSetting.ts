@@ -80,13 +80,20 @@ export default {
         autoHidden: true,
       },
       proxyConfig: {
-        form: true,
+        // form: true,
         props: {
-          result: 'items',
+          result: 'result',
           total: 'total',
         },
       },
       zoomConfig: {},
+      exportConfig: {},
+    },
+    modal: {
+      escClosable: true,
+      maskClosable: true,
+      showZoom: true,
+      resize: true,
     },
   },
   // scrollbar setting

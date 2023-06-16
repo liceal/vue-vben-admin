@@ -1,0 +1,593 @@
+import { defineComponent, reactive, ref } from 'vue';
+// import { VxeGrid, vxeGridProps, VxeGridEventProps } from 'vxe-table';
+import {
+  // VxeBasicTable,
+  VxeGrid,
+  VxeGridProps,
+  VxeGridEventProps,
+  VxeGridMethods,
+  // JmVxeGrid,
+  JmVxeModal,
+  JmVxeModalProps,
+  VxeModal,
+  VxeModalProps,
+  VxeModalEventProps,
+  VxeModalMethods,
+  VxeModalInstance,
+} from '/@/components/VxeTable';
+import { useMessage } from '/@/hooks/web/useMessage';
+
+import { Button } from 'ant-design-vue';
+
+export default defineComponent({
+  name: 'MyTable',
+  // components: { VxeGrid, JmVxeModal, VxeBasicTable },
+  setup() {
+    const dataGenerate = () => {
+      const data = [
+        {
+          id: 10000,
+          parentId: null,
+          name: 'test abc1',
+          type: 'mp3',
+          size: 1024,
+          date: '2020-08-01',
+        },
+        { id: 10050, parentId: null, name: 'Test2', type: 'mp4', size: 0, date: '2021-04-01' },
+        {
+          id: 24300,
+          parentId: 10050,
+          name: 'Test3',
+          type: 'avi',
+          size: 1024,
+          date: '2020-03-01',
+        },
+        {
+          id: 20045,
+          parentId: 24300,
+          name: 'test abc4',
+          type: 'html',
+          size: 600,
+          date: '2021-04-01',
+        },
+        {
+          id: 10053,
+          parentId: 24300,
+          name: 'test abc96',
+          type: 'avi',
+          size: 0,
+          date: '2021-04-01',
+        },
+        {
+          id: 24330,
+          parentId: 10053,
+          name: 'test abc5',
+          type: 'txt',
+          size: 25,
+          date: '2021-10-01',
+        },
+        { id: 21011, parentId: 10053, name: 'Test6', type: 'pdf', size: 512, date: '2020-01-01' },
+        { id: 22200, parentId: 10053, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        {
+          id: 23666,
+          parentId: null,
+          name: 'Test8',
+          type: 'xlsx',
+          size: 2048,
+          date: '2020-11-01',
+        },
+        { id: 23677, parentId: 23666, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 23671, parentId: 23677, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 23672, parentId: 23677, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 23688, parentId: 23666, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 23681, parentId: 23688, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 23682, parentId: 23688, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        {
+          id: 24555,
+          parentId: null,
+          name: 'test abc9',
+          type: 'avi',
+          size: 224,
+          date: '2020-10-01',
+        },
+        { id: 24566, parentId: 24555, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+        { id: 24577, parentId: 24555, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
+      ];
+      // for (let i = 0; i < 5; i++) {
+      //   data.push({
+      //     id: i + 1,
+      //     name: '张三',
+      //     age: '18',
+      //     sex: '男',
+      //   });
+      // }
+      return reactive(data);
+    };
+
+    const { createMessage } = useMessage();
+
+    const vxeGridRef = ref<VxeGridMethods>();
+    const vxeData = reactive(dataGenerate());
+    const vxeFormData = reactive({
+      name: '张三',
+      email: '111@example.com',
+      groupSelect: 1,
+      groupInput: '啊实打实的',
+    });
+
+    const vxeGridProps: VxeGridProps = {
+      // data: vxeData,
+      editConfig: {
+        trigger: 'click',
+        mode: 'cell',
+      },
+      checkboxConfig: {
+        range: true,
+        labelField: 'id',
+      },
+      rowConfig: {
+        isHover: true,
+        useKey: true,
+      },
+      treeConfig: {
+        transform: true,
+        accordion: true,
+        line: true,
+        iconOpen: 'vxe-icon-square-minus',
+        iconClose: 'vxe-icon-square-plus',
+      },
+      pagerConfig: {
+        background: true,
+        layouts: [
+          'PrevJump',
+          'PrevPage',
+          'Number',
+          'NextPage',
+          'NextJump',
+          'Sizes',
+          'FullJump',
+          'Total',
+        ],
+      },
+      tooltipConfig: {
+        showAll: false,
+      },
+      toolbarConfig: {
+        buttons: [
+          {
+            content: '打开窗口jm的',
+            buttonRender: {
+              name: 'AButton',
+              props: {
+                type: 'warning',
+                preIcon: 'ion:accessibility',
+              },
+              events: {
+                click: () => {
+                  console.log(jmVxeModalRef.value);
+                  jmVxeModalRef.value?.open();
+                },
+              },
+            },
+          },
+          {
+            content: '打开窗口原生的',
+            buttonRender: {
+              name: 'AButton',
+              props: {
+                type: 'danger',
+                preIcon: 'ion:accessibility',
+              },
+              events: {
+                click: () => {
+                  console.log(vxeModalRef.value);
+                  vxeModalRef.value?.open();
+                },
+              },
+            },
+          },
+          {
+            name: '下拉按钮',
+            disabled: true,
+            dropdowns: [
+              {
+                name: '按钮1',
+                type: 'button',
+                status: 'info',
+              },
+              {
+                name: '按钮1啊十分士大夫',
+                type: 'button',
+                status: 'primary',
+              },
+            ],
+          },
+          {
+            content: '验证数据',
+            buttonRender: {
+              name: 'AButton',
+              props: {
+                type: 'primary',
+                preIcon: 'mdi:page-next-outline',
+              },
+              events: {
+                click: () => {
+                  console.log(vxeData);
+                },
+              },
+            },
+          },
+          {
+            content: '查看check的数据',
+            buttonRender: {
+              name: 'AButton',
+              props: {
+                type: 'primary',
+                preIcon: 'mdi:page-next-outline',
+              },
+              events: {
+                click: () => {
+                  console.log(vxeGridRef.value);
+                  const data = vxeGridRef.value?.getCheckboxRecords();
+                  console.log(data);
+                },
+              },
+            },
+          },
+          {
+            buttonRender: {
+              name: 'dropDownButton',
+              props: {
+                label: '按钮名字',
+              },
+              children: [{ label: '第一个按钮' }],
+            },
+          },
+        ],
+        tools: [
+          {
+            name: 't1',
+            type: 'button',
+            status: 'success',
+          },
+          {
+            name: 't1',
+            type: 'button',
+            status: 'success',
+          },
+        ],
+      },
+      columns: [
+        {
+          type: 'checkbox',
+          treeNode: true,
+        },
+        {
+          title: '名字',
+          field: 'name',
+          editRender: {
+            name: 'AInput',
+          },
+        },
+        {
+          title: '年龄',
+          field: 'age',
+        },
+        {
+          title: '性别',
+          field: 'sex',
+        },
+        {
+          title: '操作',
+          slots: {
+            default: ({ row }) => [
+              <Button
+                onClick={() => {
+                  console.log(row);
+                }}
+              >
+                阿松大
+              </Button>,
+              <Button>阿松大</Button>,
+            ],
+          },
+        },
+      ],
+      proxyConfig: {
+        ajax: {
+          query: (params) => {
+            console.log('query', params);
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve({
+                  total: 100000,
+                  result: vxeData,
+                });
+              }, 1000);
+            });
+          },
+        },
+      },
+      formConfig: {
+        data: vxeFormData,
+        titleWidth: 100,
+        titleAlign: 'right',
+        items: [
+          {
+            field: 'name',
+            title: '名字',
+            span: 8,
+            titlePrefix: {
+              message: '名字',
+              icon: 'vxe-icon-question-circle-fill',
+            },
+            itemRender: {
+              name: 'AInput',
+              props: {
+                placeholder: '请输入名字',
+              },
+            },
+          },
+          {
+            field: 'email',
+            title: '邮件',
+            span: 8,
+            titlePrefix: {
+              useHTML: true,
+              message:
+                '点击链接：<a class="link" href="https://vxetable.cn" target="_blank">vxe-table官网</a>',
+              icon: 'vxe-icon-question-circle-fill',
+            },
+            itemRender: {
+              name: '$input',
+              props: {
+                placeholder: '请输入邮件',
+              },
+            },
+          },
+          {
+            field: 'groupSelectInput',
+            title: '输入框组',
+            span: 8,
+            itemRender: {
+              name: 'AInputGroup',
+              props: {
+                compact: true,
+              },
+              children: [
+                {
+                  field: 'groupSelect',
+                  name: 'ASelect',
+                  props: {
+                    style: { width: '30%' },
+                    options: [
+                      {
+                        label: '张三',
+                        value: 1,
+                      },
+                      {
+                        label: '张三张三张三张三张三张三张三张三张三',
+                        value: 2,
+                      },
+                    ],
+                  },
+                },
+                {
+                  field: 'groupInput',
+                  name: 'AInput',
+                  props: {
+                    style: { width: '70%' },
+                    placeholder: '请输入****',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            field: 'sex',
+            title: '性别',
+            span: 8,
+            folding: true,
+            titleSuffix: { message: '注意，必填信息！', icon: 'vxe-icon-question-circle-fill' },
+            itemRender: {
+              name: 'ASelect',
+              props: {
+                options: [
+                  {
+                    label: '男',
+                    value: 1,
+                  },
+                  {
+                    label: '女',
+                    value: 0,
+                  },
+                ],
+              },
+            },
+          },
+          {
+            field: 'age',
+            title: '年龄',
+            span: 8,
+            folding: true,
+            itemRender: {
+              name: 'AInputNumber',
+              props: { type: 'number', min: 1, max: 10, placeholder: '请输入年龄' },
+            },
+          },
+          {
+            span: 24,
+            align: 'right',
+            collapseNode: true,
+            itemRender: {
+              name: 'AButtonGroup',
+              children: [
+                {
+                  props: {
+                    type: 'primary',
+                    content: '查询',
+                    htmlType: 'submit',
+                  },
+                  // events: {
+                  //   click: (e) => {
+                  //     console.log(e);
+
+                  //     e.$form.validate((err) => {
+                  //       if (err) {
+                  //         console.log(err);
+                  //         createMessage.warn('请填写数据');
+                  //       } else {
+                  //         createMessage.success('提交成功5s', 5);
+                  //         console.log(vxeFormData);
+                  //         e.$grid.commitProxy('query');
+                  //       }
+                  //     });
+                  //   },
+                  // },
+                },
+                {
+                  props: { htmlType: 'reset', content: '重置' },
+                  events: {
+                    click: (e) => {
+                      console.log(e);
+                      const { data } = e;
+                      data.groupInput = '';
+                      data.groupSelect = 1;
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+        rules: {
+          email: [{ required: true, content: '名字必须填', trigger: 'change' }],
+          name: [{ required: true, content: '名字必须填', trigger: 'change' }],
+          groupSelectInput: [
+            {
+              required: true,
+              trigger: 'change',
+              validator: ({ data }) => {
+                if (!data.groupSelect || !data.groupInput) {
+                  return Promise.reject(new Error('必填'));
+                }
+              },
+            },
+          ],
+          sex: [{ required: true, content: '性别必须选择', trigger: 'change' }],
+          age: [{ required: true, content: '必填', trigger: 'change' }],
+        },
+      },
+      menuConfig: {
+        header: {
+          options: [
+            [
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+                children: [
+                  {
+                    name: '头部按钮1',
+                    code: 'header-1',
+                  },
+                ],
+              },
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+              },
+            ],
+            [
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+              },
+            ],
+          ],
+        },
+        body: {
+          options: [
+            [
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+                children: [
+                  {
+                    name: '头部按钮1',
+                    code: 'header-1',
+                  },
+                ],
+              },
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+              },
+            ],
+            [
+              {
+                name: '头部按钮1',
+                code: 'header-1',
+              },
+            ],
+          ],
+        },
+      },
+      // height: 'auto',
+    };
+
+    const vxeGridEvents: VxeGridEventProps = {
+      onToolbarButtonClick: (aaa) => {
+        console.log(aaa);
+      },
+      onCheckboxChange: (e) => {
+        console.log(e);
+      },
+      onFormReset: (e) => {
+        console.log('formreset', e);
+      },
+      onMenuClick: (e) => {
+        console.log('menu click', e);
+        const { menu } = e;
+        if (menu.code === 'header-1') {
+          console.log('头部 header-1');
+        }
+      },
+      onFormSubmitInvalid: (e) => {
+        console.log('formsubmit', e);
+        createMessage.warning('表单校验失败');
+      },
+    };
+
+    const jmVxeModalRef = ref<VxeModalMethods>();
+    const jmVxeModalProps: JmVxeModalProps = {
+      vxeModalRef: jmVxeModalRef,
+    };
+    const jmVxeModalEvent: VxeModalEventProps = {};
+
+    const vxeModalRef = ref<VxeModalInstance>();
+    const vxeModalProps: VxeModalProps = {
+      width: '1200px',
+      slots: {
+        default: () => [
+          <div class="h-700px">
+            <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
+          </div>,
+        ],
+      },
+    };
+    const VxeModalEvent: VxeModalEventProps = {};
+
+    return () => [
+      <div class="p-4 bg-white">
+        <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
+      </div>,
+      // <br />,
+      // <JmVxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />,
+      // <br />,
+      // <VxeBasicTable {...vxeGridProps} />,
+      <JmVxeModal {...jmVxeModalProps} {...jmVxeModalEvent} />,
+      <VxeModal ref={vxeModalRef} {...vxeModalProps} {...VxeModalEvent} />,
+      // <VxeModal ref={vxeModalRef} />,
+    ];
+  },
+});
