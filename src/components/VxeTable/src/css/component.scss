@@ -165,6 +165,18 @@
   }
 }
 
+// vxe-table
+.vxe-table--render-default .vxe-header--column:not(.col--ellipsis),
+.vxe-table--render-default .vxe-body--column:not(.col--ellipsis),
+.vxe-table--render-default .vxe-footer--column:not(.col--ellipsis) {
+  padding: 5px 0 !important;
+}
+
+.vxe-table--render-default .vxe-cell {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+
 // ant组件
 .ant-btn + .ant-btn {
   margin-left: 0.8rem;

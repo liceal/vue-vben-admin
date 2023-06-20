@@ -17,7 +17,8 @@ import {
 } from '/@/components/VxeTable';
 import { useMessage } from '/@/hooks/web/useMessage';
 
-import { Button } from 'ant-design-vue';
+import { Button, Input, Select, RangePicker } from 'ant-design-vue';
+import { debounce } from 'lodash-es';
 
 export default defineComponent({
   name: 'MyTable',
@@ -93,15 +94,7 @@ export default defineComponent({
         { id: 24566, parentId: 24555, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
         { id: 24577, parentId: 24555, name: 'Test7', type: 'js', size: 1024, date: '2021-06-01' },
       ];
-      // for (let i = 0; i < 5; i++) {
-      //   data.push({
-      //     id: i + 1,
-      //     name: '张三',
-      //     age: '18',
-      //     sex: '男',
-      //   });
-      // }
-      return reactive(data);
+      return data;
     };
 
     const { createMessage } = useMessage();
@@ -113,10 +106,27 @@ export default defineComponent({
       email: '111@example.com',
       groupSelect: 1,
       groupInput: '啊实打实的',
+      type: '',
+      size: '',
+      date: '',
+      sexOp: 1,
+      sexIn: '',
     });
 
+    //生成带搜索列配置
+    function renderHeaderFilter(field, data) {
+      return {
+        field: field,
+        slots: {
+          header: () => [<Input v-model:value={data[field]} size="small" />],
+        },
+      };
+    }
+
+    // grid配置
     const vxeGridProps: VxeGridProps = {
       // data: vxeData,
+      // height: 'auto',
       editConfig: {
         trigger: 'click',
         mode: 'cell',
@@ -125,10 +135,6 @@ export default defineComponent({
         range: true,
         labelField: 'id',
       },
-      rowConfig: {
-        isHover: true,
-        useKey: true,
-      },
       treeConfig: {
         transform: true,
         accordion: true,
@@ -136,19 +142,7 @@ export default defineComponent({
         iconOpen: 'vxe-icon-square-minus',
         iconClose: 'vxe-icon-square-plus',
       },
-      pagerConfig: {
-        background: true,
-        layouts: [
-          'PrevJump',
-          'PrevPage',
-          'Number',
-          'NextPage',
-          'NextJump',
-          'Sizes',
-          'FullJump',
-          'Total',
-        ],
-      },
+      pagerConfig: {},
       tooltipConfig: {
         showAll: false,
       },
@@ -265,17 +259,110 @@ export default defineComponent({
         {
           title: '名字',
           field: 'name',
+          slots: {
+            header: () => [<span>名字</span>, <Input v-model:value={vxeFormData.name} />],
+          },
           editRender: {
             name: 'AInput',
           },
         },
         {
-          title: '年龄',
-          field: 'age',
+          title: '类型',
+          field: 'type',
+          width: '100px',
+          children: [
+            {
+              field: 'type',
+              width: '100px',
+              slots: {
+                header: () => [
+                  <Select
+                    v-model:value={vxeFormData.type}
+                    size="small"
+                    showSearch={true}
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="1">一</Select.Option>
+                    <Select.Option value="2">二</Select.Option>
+                  </Select>,
+                ],
+              },
+            },
+          ],
         },
         {
-          title: '性别',
+          ...renderHeaderFilter('size', vxeFormData),
+          children: [
+            {
+              title: '大小',
+              field: 'size',
+              width: '100px',
+            },
+          ],
+        },
+        {
+          title: '时间',
+          field: 'date',
+          width: '150px',
+          children: [
+            {
+              field: 'date',
+              width: '150px',
+              slots: {
+                header: () => [
+                  <RangePicker
+                    v-model:value={vxeFormData.date}
+                    style={{ width: '100%' }}
+                    size="small"
+                  />,
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: '年龄',
           field: 'sex',
+          children: [
+            {
+              field: 'sex',
+              width: '100px',
+              slots: {
+                header: () => [
+                  <Input.Group style={{ display: 'flex' }}>
+                    <Select
+                      v-model:value={vxeFormData.sexOp}
+                      size="small"
+                      style={{ width: '3em' }}
+                      showArrow={false}
+                      dropdownMatchSelectWidth={false}
+                    >
+                      <Select.Option value={1}>男</Select.Option>
+                      <Select.Option value={0}>女</Select.Option>
+                      <Select.Option value={2}>隐藏</Select.Option>
+                    </Select>
+                    <Input v-model={vxeFormData.sexIn} size="small" style={{ flex: 1 }} />
+                  </Input.Group>,
+                  <Input v-model:value={vxeFormData.sexIn} size="small">
+                    {{
+                      addonBefore: () => [
+                        <Select
+                          v-model:value={vxeFormData.sexOp}
+                          size="small"
+                          showArrow={false}
+                          dropdownMatchSelectWidth={false}
+                        >
+                          <Select.Option value={1}>男</Select.Option>
+                          <Select.Option value={0}>女</Select.Option>
+                          <Select.Option value={2}>隐藏</Select.Option>
+                        </Select>,
+                      ],
+                    }}
+                  </Input>,
+                ],
+              },
+            },
+          ],
         },
         {
           title: '操作',
@@ -312,11 +399,11 @@ export default defineComponent({
         data: vxeFormData,
         titleWidth: 100,
         titleAlign: 'right',
+        span: 8,
         items: [
           {
             field: 'name',
             title: '名字',
-            span: 8,
             titlePrefix: {
               message: '名字',
               icon: 'vxe-icon-question-circle-fill',
@@ -329,9 +416,8 @@ export default defineComponent({
             },
           },
           {
-            field: 'email',
-            title: '邮件',
-            span: 8,
+            field: 'type',
+            title: '类型',
             titlePrefix: {
               useHTML: true,
               message:
@@ -346,20 +432,26 @@ export default defineComponent({
             },
           },
           {
+            field: 'size',
+            title: '大小',
+            itemRender: {
+              name: 'AInput',
+            },
+          },
+          {
             field: 'groupSelectInput',
             title: '输入框组',
-            span: 8,
             itemRender: {
               name: 'AInputGroup',
               props: {
-                compact: true,
+                style: 'display:flex',
               },
               children: [
                 {
                   field: 'groupSelect',
                   name: 'ASelect',
                   props: {
-                    style: { width: '30%' },
+                    style: { minWidth: '100px' },
                     options: [
                       {
                         label: '张三',
@@ -376,7 +468,7 @@ export default defineComponent({
                   field: 'groupInput',
                   name: 'AInput',
                   props: {
-                    style: { width: '70%' },
+                    style: { flex: 1 },
                     placeholder: '请输入****',
                   },
                 },
@@ -386,7 +478,6 @@ export default defineComponent({
           {
             field: 'sex',
             title: '性别',
-            span: 8,
             folding: true,
             titleSuffix: { message: '注意，必填信息！', icon: 'vxe-icon-question-circle-fill' },
             itemRender: {
@@ -408,7 +499,6 @@ export default defineComponent({
           {
             field: 'age',
             title: '年龄',
-            span: 8,
             folding: true,
             itemRender: {
               name: 'AInputNumber',
@@ -510,7 +600,6 @@ export default defineComponent({
             [
               {
                 name: '头部按钮1',
-                code: 'header-1',
                 children: [
                   {
                     name: '头部按钮1',
@@ -532,7 +621,6 @@ export default defineComponent({
           ],
         },
       },
-      // height: 'auto',
     };
 
     const vxeGridEvents: VxeGridEventProps = {
@@ -569,7 +657,7 @@ export default defineComponent({
       width: '1200px',
       slots: {
         default: () => [
-          <div class="h-700px">
+          <div class="h-500px">
             <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
           </div>,
         ],
@@ -577,9 +665,20 @@ export default defineComponent({
     };
     const VxeModalEvent: VxeModalEventProps = {};
 
+    const vxeGridVisible = ref(true);
+    const debounceHandleResize = debounce(() => {
+      console.log(111);
+      vxeGridVisible.value = false;
+
+      vxeGridVisible.value = true;
+    }, 500);
+    window.addEventListener('resize', () => {
+      debounceHandleResize();
+    });
+
     return () => [
-      <div class="p-4 bg-white">
-        <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
+      <div class="px-4 bg-white h-full">
+        {vxeGridVisible.value && <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />}
       </div>,
       // <br />,
       // <JmVxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />,

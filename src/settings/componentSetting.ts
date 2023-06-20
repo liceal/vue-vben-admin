@@ -49,8 +49,8 @@ export default {
       stripe: true,
       columnConfig: {
         resizable: true,
-        isCurrent: true,
-        isHover: true,
+        // isCurrent: true,
+        // isHover: true,
       },
       rowConfig: {
         isCurrent: true,
@@ -77,7 +77,8 @@ export default {
       pagerConfig: {
         pageSizes: [20, 50, 100, 500],
         pageSize: 20,
-        autoHidden: true,
+        // autoHidden: true,
+        // background: true,
       },
       proxyConfig: {
         // form: true,
