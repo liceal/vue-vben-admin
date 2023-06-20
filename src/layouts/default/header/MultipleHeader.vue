@@ -2,6 +2,7 @@
   <div :style="getPlaceholderDomStyle" v-if="getIsShowPlaceholderDom"></div>
   <div :style="getWrapStyle" :class="getClass">
     <LayoutHeader v-if="getShowInsetHeaderRef" />
+    <!-- <FixedTabs /> -->
     <MultipleTabs v-if="getShowTabs" />
   </div>
 </template>
@@ -10,12 +11,13 @@
 
   import LayoutHeader from './index.vue';
   import MultipleTabs from '../tabs/index.vue';
+  // import FixedTabs from '../FixedTabs';
 
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useFullContent } from '/@/hooks/web/useFullContent';
   import { useMultipleTabSetting } from '/@/hooks/setting/useMultipleTabSetting';
-  import { useAppInject } from '/@/hooks/web/useAppInject';
+  // import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLayoutHeight } from '../content/useContentViewHeight';
 
@@ -29,8 +31,11 @@
       const { setHeaderHeight } = useLayoutHeight();
       const { prefixCls } = useDesign('layout-multiple-header');
 
-      const { getCalcContentWidth, getSplit } = useMenuSetting();
-      const { getIsMobile } = useAppInject();
+      const {
+        // getCalcContentWidth,
+        getSplit,
+      } = useMenuSetting();
+      // const { getIsMobile } = useAppInject();
       const {
         getFixed,
         getShowInsetHeaderRef,
@@ -54,7 +59,9 @@
       const getWrapStyle = computed((): CSSProperties => {
         const style: CSSProperties = {};
         if (unref(getFixed)) {
-          style.width = unref(getIsMobile) ? '100%' : unref(getCalcContentWidth);
+          // style.width = unref(getIsMobile) ? '100%' : unref(getCalcContentWidth);
+          style.width = '100%';
+          style.position = 'sticky';
         }
         if (unref(getShowFullHeaderRef)) {
           style.top = `${HEADER_HEIGHT}px`;

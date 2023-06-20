@@ -35,9 +35,9 @@
     ],
     "description": "vue3ts模板"
   },
-  "tsxvue3": {
+  "tsx": {
     "scope": "typescriptreact",
-    "prefix": "tsxvue3",
+    "prefix": "tsx",
     "body": [
       "import {defineComponent} from 'vue'",
       "",
@@ -50,5 +50,21 @@
       "})"
     ],
     "description": "vue3ts模板"
+  },
+  "tsxvue3": {
+    "scope": "vue",
+    "prefix": "tsxvue3",
+    "body": [
+      "<script lang='tsx'>",
+      "  import { defineComponent } from 'vue';",
+      "",
+      "  export default defineComponent({",
+      "    name: '',",
+      "  });",
+      "</script>",
+      "",
+      "<style lang='scss' scoped></style>"
+    ],
+    "description": "tsxvue3模板"
   }
 }

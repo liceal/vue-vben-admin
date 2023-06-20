@@ -7,7 +7,7 @@ const My: AppRouteModule = {
   path: '/my',
   name: 'My',
   component: LAYOUT,
-  redirect: '/my/form',
+  // redirect: '/my/form',
   meta: {
     icon: 'simple-icons:about-dot-me',
     title: t('routes.my.my'),
@@ -37,6 +37,15 @@ const My: AppRouteModule = {
       component: () => import('/@/views/my/table'),
       meta: {
         title: t('routes.my.table'),
+        icon: 'simple-icons:about-dot-me',
+      },
+    },
+    {
+      path: 'table2',
+      name: 'MyTable2',
+      component: () => import('/@/views/my/table2/index.vue'),
+      meta: {
+        title: t('routes.my.table2'),
         icon: 'simple-icons:about-dot-me',
       },
     },

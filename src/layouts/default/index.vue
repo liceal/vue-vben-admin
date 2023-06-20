@@ -21,6 +21,8 @@
   import LayoutHeader from './header/index.vue';
   import LayoutContent from './content/index.vue';
   import LayoutSideBar from './sider/index.vue';
+  // import LayoutSideBar from './sider';
+
   import LayoutMultipleHeader from './header/MultipleHeader.vue';
 
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';

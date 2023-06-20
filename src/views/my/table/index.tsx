@@ -127,6 +127,11 @@ export default defineComponent({
     const vxeGridProps: VxeGridProps = {
       // data: vxeData,
       // height: 'auto',
+      autoResize: true,
+      syncResize: true,
+      resizeConfig: {
+        refreshDelay: 0,
+      },
       editConfig: {
         trigger: 'click',
         mode: 'cell',
@@ -665,12 +670,15 @@ export default defineComponent({
     };
     const VxeModalEvent: VxeModalEventProps = {};
 
-    const vxeGridVisible = ref(true);
+    // const vxeGridVisible = ref(true);
+    const autoHeight = ref('');
     const debounceHandleResize = debounce(() => {
-      console.log(111);
-      vxeGridVisible.value = false;
-
-      vxeGridVisible.value = true;
+      const contentElement = document.querySelector('.vben-layout-content');
+      const parentElement = contentElement?.parentElement;
+      const parentHeight = parentElement?.clientHeight || 0;
+      const contentHeight = parentHeight * 1; // 1 表示 100%
+      console.log(contentHeight + 'px');
+      autoHeight.value = contentHeight + 'px';
     }, 500);
     window.addEventListener('resize', () => {
       debounceHandleResize();
@@ -678,8 +686,9 @@ export default defineComponent({
 
     return () => [
       <div class="px-4 bg-white h-full">
-        {vxeGridVisible.value && <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />}
+        <VxeGrid height={autoHeight.value} ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
       </div>,
+
       // <br />,
       // <JmVxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />,
       // <br />,
