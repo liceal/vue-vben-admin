@@ -18,12 +18,13 @@ import {
 import { useMessage } from '/@/hooks/web/useMessage';
 
 import { Button, Input, Select, RangePicker } from 'ant-design-vue';
-import { debounce } from 'lodash-es';
 
 export default defineComponent({
   name: 'MyTable',
   // components: { VxeGrid, JmVxeModal, VxeBasicTable },
   setup() {
+    const { createMessage } = useMessage();
+
     const dataGenerate = () => {
       const data = [
         {
@@ -97,8 +98,7 @@ export default defineComponent({
       return data;
     };
 
-    const { createMessage } = useMessage();
-
+    // grid配置
     const vxeGridRef = ref<VxeGridMethods>();
     const vxeData = reactive(dataGenerate());
     const vxeFormData = reactive({
@@ -122,16 +122,8 @@ export default defineComponent({
         },
       };
     }
-
-    // grid配置
     const vxeGridProps: VxeGridProps = {
-      // data: vxeData,
-      // height: 'auto',
-      autoResize: true,
-      syncResize: true,
-      resizeConfig: {
-        refreshDelay: 0,
-      },
+      height: 'auto',
       editConfig: {
         trigger: 'click',
         mode: 'cell',
@@ -670,23 +662,9 @@ export default defineComponent({
     };
     const VxeModalEvent: VxeModalEventProps = {};
 
-    // const vxeGridVisible = ref(true);
-    const autoHeight = ref('');
-    const debounceHandleResize = debounce(() => {
-      const contentElement = document.querySelector('.vben-layout-content');
-      const parentElement = contentElement?.parentElement;
-      const parentHeight = parentElement?.clientHeight || 0;
-      const contentHeight = parentHeight * 1; // 1 表示 100%
-      console.log(contentHeight + 'px');
-      autoHeight.value = contentHeight + 'px';
-    }, 500);
-    window.addEventListener('resize', () => {
-      debounceHandleResize();
-    });
-
     return () => [
       <div class="px-4 bg-white h-full">
-        <VxeGrid height={autoHeight.value} ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
+        <VxeGrid ref={vxeGridRef} {...vxeGridProps} {...vxeGridEvents} />
       </div>,
 
       // <br />,

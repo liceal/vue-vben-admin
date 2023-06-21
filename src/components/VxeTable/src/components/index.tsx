@@ -1,6 +1,7 @@
 import { VXETableCore, VxeGlobalInterceptorHandles } from 'vxe-table';
 import AAutoComplete from './AAutoComplete';
 import AInput from './AInput';
+import ATextarea from './ATextarea';
 import AInputNumber from './AInputNumber';
 import ASelect from './ASelect';
 import ACascader from './ACascader';
@@ -82,6 +83,7 @@ export const VXETablePluginAntd = {
     renderer.mixin({
       AAutoComplete,
       AInput,
+      ATextarea,
       AInputNumber,
       ASelect,
       ACascader,

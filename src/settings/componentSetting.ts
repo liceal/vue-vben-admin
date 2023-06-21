@@ -64,6 +64,11 @@ export default {
       customConfig: {
         storage: true,
       },
+      autoResize: true,
+      syncResize: true,
+      resizeConfig: {
+        refreshDelay: 0,
+      },
     },
     grid: {
       toolbarConfig: {

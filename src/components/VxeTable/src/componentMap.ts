@@ -24,6 +24,7 @@ const componentMap = new Map<ComponentType, Component>();
 componentMap.set('AButton', Button);
 
 componentMap.set('AInput', Input);
+componentMap.set('ATextarea', Input.TextArea);
 componentMap.set('AInputSearch', Input.Search);
 componentMap.set('AInputNumber', InputNumber);
 componentMap.set('AAutoComplete', AutoComplete);

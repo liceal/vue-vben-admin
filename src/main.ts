@@ -5,6 +5,8 @@ import 'ant-design-vue/dist/antd.less';
 // Register icon sprite
 import 'virtual:svg-icons-register';
 
+import '/@/components/Splitpanes/splitpanes.css';
+
 import { createApp } from 'vue';
 
 import { registerGlobComp } from '@/components/registerGlobComp';

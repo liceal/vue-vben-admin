@@ -1,5 +1,6 @@
 export type ComponentType =
   | 'AInput'
+  | 'ATextarea'
   | 'AInputNumber'
   | 'ASelect'
   | 'AApiSelect'
