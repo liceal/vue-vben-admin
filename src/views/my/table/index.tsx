@@ -179,7 +179,7 @@ export default defineComponent({
           },
           {
             name: '下拉按钮',
-            disabled: true,
+            disabled: false,
             dropdowns: [
               {
                 name: '按钮1',

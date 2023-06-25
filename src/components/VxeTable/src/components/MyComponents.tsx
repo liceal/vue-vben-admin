@@ -118,7 +118,7 @@ const renderComponent: Record<string, RendererOptions> = {
   //表单的 查询，重置按钮
   formSearchReset: {
     renderItemContent: (renderOpts, params) => {
-      console.log(renderOpts, params);
+      // console.log(renderOpts, params);
       const { $form, data } = params;
       const { props = {} } = renderOpts;
       const { size = 'small', reset = null, search = null, searchValid = null } = props;

@@ -6,6 +6,7 @@
     // VxeGridMethods,
     VxeForm,
     VxeFormProps,
+    JmVxeGrid,
   } from '/@/components/VxeTable';
   import { Splitpanes, Pane } from '/@/components/Splitpanes';
   import { Input } from 'ant-design-vue';
@@ -91,38 +92,127 @@
       const vxeData = reactive(dataGenerate());
 
       const vxeGridProps: VxeGridProps = {
-        data: vxeData,
+        // data: vxeData,
         height: 'auto',
         columns: [
           {
             field: 'name',
             title: '名字',
+            headerClassName: 'search',
+            slots: {
+              header: () => [<Input size="small" />],
+            },
             children: [
               {
                 field: 'name',
+                title: '名字',
                 width: '100px',
-                slots: {
-                  header: () => [<Input size="small" />],
-                },
               },
             ],
           },
           {
             title: '操作',
-            width: '100px',
-            cellRender: {
-              name: '$button',
-              props: {
-                status: 'primary',
-              },
-              events: {
-                click: () => {
-                  console.log(1);
+            width: '120px',
+            children: [
+              {
+                field: 'name',
+                title: '操作1',
+                width: '100px',
+                headerClassName: 'search',
+                slots: {
+                  header: () => [<Input size="small" />],
                 },
               },
+            ],
+            cellRender: {
+              name: 'AButtonGroup',
+              children: [
+                {
+                  content: '详情',
+                  props: {
+                    type: 'primary',
+                    size: 'small',
+                  },
+                  events: {
+                    click: () => {
+                      console.log(1);
+                    },
+                  },
+                },
+                {
+                  content: '删除',
+                  props: {
+                    type: 'danger',
+                    size: 'small',
+                  },
+                  events: {
+                    click: () => {
+                      console.log(1);
+                    },
+                  },
+                },
+              ],
             },
           },
         ],
+        menuConfig: {
+          header: {
+            options: [
+              [
+                {
+                  name: '右击',
+                },
+              ],
+              [
+                {
+                  name: '右击',
+                },
+              ],
+            ],
+          },
+          body: {
+            options: [
+              [
+                {
+                  name: '右击',
+                },
+              ],
+            ],
+          },
+        },
+        toolbarConfig: {
+          buttons: [
+            {
+              content: '操作1',
+              buttonRender: {
+                name: 'AButton',
+                props: {
+                  type: 'warning',
+                  preIcon: 'ion:accessibility',
+                },
+              },
+            },
+          ],
+        },
+        printConfig: {
+          isHeader: true,
+        },
+        pagerConfig: {},
+        proxyConfig: {
+          ajax: {
+            query: (params) => {
+              console.log('query', params);
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve({
+                    total: 100000,
+                    result: vxeData,
+                  });
+                }, 1000);
+              });
+            },
+          },
+        },
       };
 
       // vxeform配置
@@ -258,15 +348,15 @@
 
       return () => [
         <Splitpanes style="height: 100%">
-          <Pane minSize="15" class="bg-white p-2">
+          <Pane minSize="15" class="bg-white p-2" position={true}>
             <VxeForm {...vxeFormProps} />
           </Pane>
-          <Pane size="70">
+          <Pane size="70" minSize="50">
             <Splitpanes horizontal>
-              <Pane minSize="30">
-                <VxeGrid {...vxeGridProps} />
+              <Pane>
+                <JmVxeGrid {...vxeGridProps} />
               </Pane>
-              <Pane minSize="30">
+              <Pane>
                 <VxeGrid {...vxeGridProps} />
               </Pane>
             </Splitpanes>
