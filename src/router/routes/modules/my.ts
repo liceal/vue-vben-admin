@@ -49,6 +49,15 @@ const My: AppRouteModule = {
         icon: 'simple-icons:about-dot-me',
       },
     },
+    {
+      path: 'demo',
+      name: 'Demo',
+      component: () => import('/@/views/my/demo'),
+      meta: {
+        title: t('routes.my.test'),
+        icon: 'simple-icons:about-dot-me',
+      },
+    },
   ],
 };
 
