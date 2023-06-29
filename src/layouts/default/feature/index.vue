@@ -11,6 +11,7 @@
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
   import SessionTimeoutLogin from '/@/views/sys/login/SessionTimeoutLogin.vue';
+
   export default defineComponent({
     name: 'LayoutFeatures',
     components: {
@@ -35,7 +36,7 @@
         const settingButtonPosition = unref(getSettingButtonPosition);
 
         if (settingButtonPosition === SettingButtonPositionEnum.AUTO) {
-          return !unref(getShowHeader) || unref(getFullContent);
+          return !unref(getShowHeader) || !unref(getFullContent);
         }
         return settingButtonPosition === SettingButtonPositionEnum.FIXED;
       });
